@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  db_film:
+    image: postgres:11-alpine
+    networks:
+      - db-network
+    volumes:
+      - film_db:/var/lib/postgresql
+      - film_db_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=film
+      - POSTGRES_PASSWORD=${FILM_DB_PASSWORD:-}
+
+networks:
+  db-network:
+    driver: bridge
+
+volumes:
+  film_db:
+  film_db_data:
