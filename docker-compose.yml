@@ -11,8 +11,27 @@ services:
       - film_db:/var/lib/postgresql
       - film_db_data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=film
-      - POSTGRES_PASSWORD=${FILM_DB_PASSWORD:-}
+      POSTGRES_DB: film
+      POSTGRES_USER: film
+      POSTGRES_PASSWORD: ${FILM_DB_PASSWORD:-}
+
+  db_film-admin:
+    image: dpage/pgadmin4
+    ports:
+      - 5050:5050
+    environment:
+      PGADMIN_USER: ${PGADMIN_USER:-pgadmin}
+      PGADMIN_PASSWORD: ${PGADMIN_PASSWORD:-}
+      POSTGRES_HOST: db_film
+      POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+      POSTGRES_USER: film
+      POSTGRES_DATABASE: film
+      POSTGRES_PASSWORD: ${FILM_DB_PASSWORD:-}
+    networks:
+      - db-network
+    depends_on:
+      - db_film
+
 
 networks:
   db-network:
